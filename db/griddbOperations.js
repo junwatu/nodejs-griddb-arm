@@ -4,7 +4,7 @@ import store from './griddbClient.js';
 // Helper function to create or get a reusable container
 export async function getOrCreateContainer(containerName, columnInfoList, rowKey = true) {
 	try {
-		var conInfo = new griddb.ContainerInfo({
+		const conInfo = new griddb.ContainerInfo({
 			'name': containerName,
 			'columnInfoList': columnInfoList,
 			'type': griddb.ContainerType.COLLECTION,
@@ -33,17 +33,39 @@ export async function insertData(container, rowData) {
 	}
 }
 
+
 // Function to query data
 export async function queryData(container, queryStr = "select *") {
 	try {
 		let query = container.query(queryStr);
 		let rs = await query.fetch();
+		const results = [];
 		while (rs.hasNext()) {
-			console.log(rs.next());
+			const row = rs.next()
+			results.push(row);
 		}
-		await container.commit();
+		return results;
 	} catch (err) {
 		console.error("Error querying data:", err.message);
 		throw err;
+	}
+}
+
+
+/**
+ * These query only valid if the columnInfoList contain unique ID field
+ * @param {*} id 
+ * @param {*} container 
+ * @param {*} store 
+ * @returns 
+ */
+export async function queryDataById(id, container, store) {
+	try {
+		const row = await container.get(parseInt(id));
+		const result = [];
+		result.push(row);
+		return result;
+	} catch (err) {
+		console.log(err);
 	}
 }
