@@ -14,13 +14,12 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
 
 RUN source ~/.nvm/nvm.sh && nvm install 20 && nvm use 20
 
-
 COPY ./lib/griddb-c-client-5.5.0-linux.aarch64.rpm /
 RUN rpm -Uvh /griddb-c-client-5.5.0-linux.aarch64.rpm
 
 SHELL ["/bin/bash", "--login", "-c"]
 # Copy entrypoint and files
-COPY run-griddb.sh package.json main.js /root/
+COPY run-griddb.sh package.json main.js server.js /root/
 COPY db /root/db/
 
 WORKDIR /root
@@ -35,8 +34,10 @@ RUN npm install
 RUN rm ../${GRIDDB_NODE_API_VERSION}.tar.gz
 
 WORKDIR /root
+
+EXPOSE 3000
 # Set permission executable for script
 RUN chmod a+x run-griddb.sh
-
+RUN npm install
 # Run sample
 CMD ["/bin/bash", "run-griddb.sh"]
