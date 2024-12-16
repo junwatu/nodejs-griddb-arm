@@ -2,16 +2,48 @@
 
 Make sure to check out this [blog](https://griddb.net/en/blog/griddb-on-arm-with-docker/) for instructions on how to install GridDB using Docker on ARM machines.
 
-## Build
+## Get Start
 
-Clone this repository, for example on MacBook M-series, and build with docker.
+Clone this repository:
+
+```shell
+git clone https://github.com/junwatu/nodejs-griddb-arm.git
+```
+
+This app is a sample on how to connect to GridDB database.
+
+## Build the Sample App
+
+Build the sample app with docker:
 
 ```shell
 docker build -t node-griddb-arm .
 ```
 
-## Running the code
+## Running the GridDB server
+
+Create `.env` file in the project folder with this content:
+
+```ini
+GRIDDB_CLUSTER_NAME=myCluster
+GRIDDB_PASSWORD=admin
+NOTIFICATION_MEMBER=1
+CONTAINER_NAME=griddb-server
+NETWORK_NAME=griddb-net
+IMAGE_NAME=griddbnet/griddb:arm-5.5.0
+```
+
+Start the GridDB Server:
 
 ```shell
-docker run --name griddb-node --network griddb-net -e GRIDDB_CLUSTER_NAME=myCluster -e GRIDDB_USERNAME=admin -e GRIDDB_PASSWORD=admin -e IP_NOTIFICATION_MEMBER=griddb-server:10001 node-griddb-arm
+./start-griddb.sh
+```
+
+## Running the Sample App
+
+```shell
+docker run --name nodejs-griddb-demo \        
+    --network griddb-net \
+    --env-file .env \
+    -p 3000:3000 node-griddb-arm
 ```
