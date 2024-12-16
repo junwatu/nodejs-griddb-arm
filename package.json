@@ -7,6 +7,7 @@
   },
   "type": "module",
   "scripts": {
+    "build": "npm install && docker build -t node-griddb-arm .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
