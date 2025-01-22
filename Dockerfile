@@ -19,7 +19,7 @@ RUN rpm -Uvh /griddb-c-client-5.5.0-linux.aarch64.rpm
 
 SHELL ["/bin/bash", "--login", "-c"]
 # Copy entrypoint and files
-COPY run-griddb.sh package.json main.js server.js /root/
+COPY start-griddb.sh package.json main.js server.js /root/
 COPY db /root/db/
 
 WORKDIR /root
