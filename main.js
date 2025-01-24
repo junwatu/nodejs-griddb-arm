@@ -8,29 +8,28 @@ import {
 (async () => {
   try {
     const containerName = "species";
+
+    const columnInfoList = [
+      ["id", griddb.Type.INTEGER],
+      ["name", griddb.Type.STRING],
+      ["age", griddb.Type.DOUBLE],
+    ];
+
+    /**
     const columnInfoList = [
       ["name", griddb.Type.STRING],
       ["status", griddb.Type.BOOL],
       ["count", griddb.Type.LONG],
       ["lob", griddb.Type.BLOB],
     ];
+    */
 
     let container = await getOrCreateContainer(containerName, columnInfoList);
 
-    const rowData1 = [
-      "human",
-      true,
-      7,
-      Buffer.from([65, 66, 67, 68, 69, 70, 71, 72, 73, 74]),
-    ];
+    const rowData1 = [1, "Bobcat", 100];
     await insertData(container, rowData1);
 
-    const rowData2 = [
-      "animal",
-      false,
-      5,
-      Buffer.from([65, 66, 67, 68, 69, 70, 71, 72, 73, 74]),
-    ];
+    const rowData2 = [2, "Tiger", 5];
     await insertData(container, rowData2);
 
     await queryData(container);
